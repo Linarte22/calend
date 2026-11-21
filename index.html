@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un poquito de cariño para ti</title>
+<style>
+:root{--crema:#f6ecd9;--vino:#7b1e2e;--oro:#e9d29a;--pino:#5f7f62;--tinta:#3b2a2a}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--crema);color:var(--tinta);min-height:100vh;overflow-x:hidden}
+#nieve{position:fixed;inset:0;pointer-events:none;z-index:50}
+.pantalla{display:none;min-height:100vh}.pantalla.on{display:block;animation:ent .9s ease}
+@keyframes ent{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+#portada.on{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;text-align:center;
+ background:radial-gradient(circle at 50% 35%,#fbf4e4,var(--crema) 70%)}
+#portada.salir{animation:sal .8s ease forwards}
+@keyframes sal{to{opacity:0;transform:scale(1.08)}}
+h1{font-weight:400;font-style:italic;font-size:clamp(1.8rem,6vw,2.8rem);color:var(--vino);line-height:1.2}
+.sobre{position:relative;width:min(300px,80vw);aspect-ratio:3/2;background:#fffaf0;border-radius:6px;box-shadow:0 18px 40px rgba(90,50,40,.25);
+ border:1px solid #e6d6b4;animation:flota 4s ease-in-out infinite}
+@keyframes flota{50%{transform:translateY(-8px)}}
+.sobre:before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom right,transparent 49.5%,#eadcbc 50%) 0 0/50% 100% no-repeat,linear-gradient(to bottom left,transparent 49.5%,#eadcbc 50%) 100% 0/50% 100% no-repeat;opacity:.7}
+.solapa{position:absolute;left:0;top:0;width:100%;height:58%;background:#f1e3c3;clip-path:polygon(0 0,100% 0,50% 100%);filter:drop-shadow(0 2px 2px rgba(0,0,0,.15))}
+.lazo-v{position:absolute;left:50%;top:0;bottom:0;width:26px;margin-left:-13px;background:var(--vino);opacity:.92}
+.lazo-h{position:absolute;top:50%;left:0;right:0;height:26px;margin-top:-13px;background:var(--vino);opacity:.92}
+.sello{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b0344a,var(--vino));
+ display:grid;place-items:center;color:#f6ecd9;font-size:1.7rem;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.etiqueta{position:absolute;right:-14px;bottom:-18px;background:#fffdf6;border:1px solid #d9c59a;padding:6px 14px;border-radius:4px;transform:rotate(-6deg);
+ font-style:italic;color:var(--vino);box-shadow:0 4px 10px rgba(0,0,0,.18)}
+.btn{background:var(--vino);color:#fdf3e1;border:0;padding:15px 34px;border-radius:40px;font:inherit;font-size:1.05rem;letter-spacing:.04em;cursor:pointer;
+ box-shadow:0 8px 20px rgba(123,30,46,.35);transition:.25s}
+.btn:hover{transform:translateY(-2px);background:#8f2638}
+
+#tablero.on{background:#0e4a3a}
+.layout{max-width:1180px;margin:0 auto;padding:24px 14px 44px;display:grid;gap:18px;grid-template-columns:1fr}
+.lado{color:#fbeedd;display:flex;flex-direction:column;gap:8px}
+.lado .mes{font-size:.85rem;letter-spacing:.08em}
+.lado .estrella{color:#ff4a1c;font-size:2.6rem;line-height:1}
+.lado h2{font-weight:400;font-style:italic;font-size:clamp(1.9rem,6vw,2.5rem);line-height:1.1}
+.lado .linea{height:1px;background:rgba(251,238,221,.45);margin:6px 0;max-width:260px}
+.lado p{font-size:1rem;line-height:1.4;max-width:260px}.lado small{opacity:.7;font-style:italic}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:84px;grid-auto-flow:dense;gap:10px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:900px){.layout{grid-template-columns:230px 1fr;gap:26px}.grid{grid-template-columns:repeat(6,1fr)}.lado{justify-content:flex-end;padding-bottom:10px}}
+.dia{position:relative;border:0;border-radius:8px;padding:12px;text-align:left;font-family:Georgia,serif;cursor:pointer;display:flex;flex-direction:column;overflow:hidden;transition:transform .2s;min-width:0}
+.dia:active{transform:scale(.97)}
+.dia .num{width:25px;height:25px;border:1px solid currentColor;border-radius:50%;font-size:.65rem;display:grid;place-items:center;flex:none}
+.dia .tx{font-size:.93rem;line-height:1.2;margin-top:8px}
+.dia .ic{margin-top:auto;text-align:center;font-size:2.6rem;line-height:1;padding-top:6px}
+.dia .ic img{width:100%;height:86px;object-fit:cover;border:3px solid #fff;border-radius:3px;box-shadow:0 3px 8px rgba(0,0,0,.25);transform:rotate(-2deg)}
+.k0{background:#ff3b0a;color:#fff}.k1{background:#fde0cf;color:#0f3d30}.k2{background:#fafafa;color:#0f3d30}
+.k3{background:#ff8be3;color:#0f3d30}.k4{background:#a99bff;color:#0f3d30}
+.dia.bloq{opacity:.55;filter:saturate(.6)}
+.dia.bloq:after{content:"🔒";position:absolute;right:9px;top:8px;font-size:.85rem}
+.dia.abierto:before{content:"♥";position:absolute;right:9px;top:8px;font-size:.7rem;color:#fff;background:#c0392b;border-radius:50%;width:19px;height:19px;display:grid;place-items:center}
+.dia.hoy{animation:pulso 1.8s infinite}
+@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(255,235,170,.95)}100%{box-shadow:0 0 0 14px rgba(255,235,170,0)}}
+/* MODAL */
+#modal{position:fixed;inset:0;background:rgba(30,12,16,.72);display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px 14px;z-index:100}
+#modal.on{display:flex}
+.carta{background:#fffaf0;border-radius:10px;max-width:480px;width:100%;padding:28px 22px 24px;box-shadow:0 20px 50px rgba(0,0,0,.5);animation:ent .5s ease;margin:auto;position:relative}
+.carta .dia{color:var(--vino);letter-spacing:.2em;font-size:.8rem;text-align:center}
+.carta h3{text-align:center;font-weight:400;font-style:italic;font-size:1.5rem;color:var(--vino);margin:6px 0 16px}
+.polaroid{position:relative;background:#fff;padding:12px 12px 14px;box-shadow:0 8px 20px rgba(0,0,0,.28);transform:rotate(-2deg);margin:8px auto 24px;max-width:300px;animation:polIn .7s ease both}
+.polaroid.par{transform:rotate(2deg)}
+@keyframes polIn{from{opacity:0;transform:translateY(14px) rotate(-6deg)}}
+.polaroid:before{content:"";position:absolute;top:-12px;left:50%;width:78px;height:24px;margin-left:-39px;background:rgba(233,210,154,.75);transform:rotate(-3deg);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.polaroid .marco{background:#efe8da;aspect-ratio:1;overflow:hidden}
+.polaroid img{width:100%;height:100%;display:block;object-fit:cover;opacity:0;transition:opacity .6s}
+.polaroid img.ok{opacity:1}
+.polaroid.fallo img{display:none}.polaroid.fallo .marco{display:grid;place-items:center;padding:14px;text-align:center;font-size:.85rem;color:#8a7a6a}.polaroid.fallo .marco:after{content:"La foto no pudo cargar. Revisa tu conexión a internet."}
+.polaroid .pie{min-height:34px;padding-top:10px;text-align:center;font-style:italic;font-size:.95rem;color:#6b4a3a}
+.polaroid .pie:empty{min-height:20px}
+.texto{line-height:1.75;font-size:1.04rem;white-space:pre-line}
+.firma{text-align:right;font-style:italic;color:var(--vino);margin-top:14px}
+.cerrar{display:block;margin:20px auto 0}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:rgba(255,250,240,.97);color:var(--vino);padding:13px 20px;border-radius:30px;
+ box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:.4s;z-index:200;text-align:center;width:max-content;max-width:90vw;font-size:.95rem}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<canvas id="nieve"></canvas>
+
+<section id="portada" class="pantalla on">
+  <h1>Aunque no te lo pude regalar a como tu querias <br>pero hice este detalle con todo el amor del mundo<br>para ti mi princesa</h1>
+  <div class="sobre"><div class="lazo-v"></div><div class="lazo-h"></div><div class="solapa"></div><div class="sello">♥</div><div class="etiqueta">Para ti, mi amor</div></div>
+  <button class="btn" id="aceptar">Aceptar mi regalo</button>
+</section>
+
+<section id="tablero" class="pantalla">
+  <div class="layout">
+    <aside class="lado"><div class="mes">DICIEMBRE 2026</div><div class="estrella">✷</div><h2>Feliz Navidad,<br>mi Amor</h2><div class="linea"></div>
+      <p>Pequeñas sorpresas para cerrar el año con corazón y alegría, aunque no te pude regalar uno fisico te hice este con muco amor.</p><small>Para ti, con amor Tu galletita ♥</small></aside>
+    <div class="grid" id="mapa"></div>
+  </div>
+</section>
+
+<div id="modal"><div class="carta" id="carta"></div></div>
+<div id="toast"></div>
+
+<script>
+const MODO_PRUEBA = false;    
+const ANIO = 2026;           
+const FIRMA = "TE AMO MI VIDA HERMOSA ♥";
+
+const ICONOS=["❄️","💌","🎶","🧦","🕯️","🧤","🍰","🦌","🌿","🔔","🏡","🍭","⛸️","💂","🔔","🎁","🎄","🎀","⭐","🔮","🧣","📚","❄️","⛄"];
+
+const DIARIO_NAVIDAD = [
+ {titulo:"Empieza nuestra cuenta regresiva",foto:"https://i.ibb.co/DfJHrDLL/foto1.jpg",texto:"Hoy empieza diciembre y quise regalarte un rinconcito de calma. Cada día encontrarás algo mío para ti. Quiero que sepas que, pase lo que pase, me tienes a mí."},
+ {titulo:"Tú eres mi hogar",foto:"https://i.ibb.co/x8F4K4z3/3.jpg",texto:"Hay lugares que no se miden en kilómetros. Mi hogar es donde estás tú, aunque ahora nos separe la distancia. Ahí me quedo, siempre."},
+ {titulo:"No tienes que ser fuerte todo el tiempo",foto:"https://i.ibb.co/tTy90nmM/4.jpg",texto:"Sé que has cargado mucho. Pweo quiero que sepas que a mi lado puedes descansar, llorar o simplemente callar. No te voy a soltar."},
+ {titulo:"El día que te conocí",foto:"https://i.ibb.co/whvg41mc/5.jpg",texto:"Recuerdo cómo me temblaban las manos y cómo el mundo se volvió más suave contigo. Sin saberlo, ese día empezó lo mejor de mi vida."},
+ {titulo:"Valiente",foto:"https://i.ibb.co/dswr22Sk/6.jpg",texto:"Mereces ser feliz sin pedir permiso. Admiro la forma en que sigues adelante pese a todo. Estoy muy orgulloso de ti por lo increible que eres min  amor."},
+ {titulo:"Una promesa pequeña",foto:"https://i.ibb.co/mC4S6ktP/7.jpg",texto:"Te prometo escucharte siempre, cuidar lo que sientes y no rendirme cuando se ponga difícil. Las promesas pequeñas, cumplidas cada día, construyen las grandes."},
+ {titulo:"Cuando me haces falta",foto:"https://i.ibb.co/v611dZRV/8.jpg",texto:"Hay noches en que daría cualquier cosa por un abrazo tuyo. Entonces cierro los ojos y te recuerdo sonriendo. Eso aunque no es suficiente me basta para esperar a la proxima ves que estemos juntos mi princesa."},
+ {titulo:"Lo que opinen los demás",foto:"https://i.ibb.co/KpN5tSTM/9.jpg",texto:"Lo nuestro es real, es bonito y es nuestro. Nadie tiene que entenderlo para que sea verdad. Yo te elijo con calma, con paciencia y con mucho amor y sinceridad por que te amo."},
+ {titulo:"Un recuerdo que guardo",foto:"https://i.ibb.co/0p7gCR2h/11.jpg",texto:"Hay un momento a tu lado que repaso cuando el día se pone gris. No hacía falta nada especial: bastaba que fueras tú."},
+ {titulo:"Tu valor no depende de nadie",foto:"https://i.ibb.co/1f6SKvZn/12.jpg",texto:"Eres valiosa tal como eres. Ninguna discusión, ninguna palabra dura cambia lo maravillosa que eres. Para mi tu lo vales todo en esta vida."},
+ {titulo:"Paso a paso",foto:"https://i.ibb.co/wZw2Xvmq/13.jpg",texto:"Un día difícil no es una vida difícil. Respira, mírate con cariño y da el siguiente paso. Yo camino contigo, aunque sea desde lejos mi chiquita hermosa."},
+ {titulo:"Tu sonrisa",foto:"https://i.ibb.co/xSnQ61Hx/2.jpg",texto:"Si pudiera guardar algo, siempre sería tu risa. Cuando la escucho todo lo malo se hace pequeño. Cuídala y yo tambien lo haré, que es tesoro muy valioso para mi."},
+ {titulo:"A pesar de la distancia",foto:"https://i.ibb.co/mC4S6ktP/7.jpg",texto:"La distancia es solo un tramo del camino, no es el final. Cada mensaje, cada audio, cada videollamada, cada espera nos acerca a abrazarnos otra vez."},
+ {titulo:"Sueños en común",foto:"https://i.ibb.co/gb7vM5BX/Whats-App-Image-2026-11-13-at-1-42-54-PM.jpg",texto:"Imagino una casita a como a ti te gustaria asi rosada, jardin de flores, con luces hermosas, café en la mañana y tu mano en la mía viendo como su cumple lo que deseamos y no es un sueño lejano lo estamos construyendo paso a paso juntos mi amor. Te amo."},
+ {titulo:"Gracias",foto:"https://i.ibb.co/SXMXD7sN/Whats-App-Image-2026-11-17-at-4-29-22-PM.jpg",texto:"Gracias por quedarte, por confiar, por abrirme tu corazón incluso cuando duele. Soy mejor persona desde que estás en mi vida nuca te vallas tu vales mi vida entera."},
+ {titulo:"Lo que más admiro",foto:"https://i.ibb.co/0R5b9468/Whats-App-Image-2026-11-17-at-4-46-51-PM.jpg",texto:"Admiro tu ternura, tu fuerza silenciosa y cómo te importan los demás. Ojalá te vieras con mis ojos solo un momento y te dieras cuenta de lo increible y valiosa que eres ante mis ojos, Te Amo."},
+ {titulo:"Si hoy fue un mal día",foto:"https://i.ibb.co/bRCFHJ5L/foto2.jpg",texto:"Mi amor, aunque sea con estas palabras. Hoy no tienes que resolver nada. por muy difici que parezca yo estaré igual de cerca de ti cada segundo de mi vida."},
+ {titulo:"Te elijo otra vez",foto:"https://i.ibb.co/xKzjJmhY/foto2.jpg",texto:"Si la vida me diera mil oportunidades de elegir, mil veces te elegiría a ti. Con tus días buenos y con los difíciles ,eres y siempre seras mi vida hermosa y a quien voy a amar con todas mis fuerzas."},
+ {titulo:"Nuestro lugar seguro",foto:"https://i.ibb.co/ksQhB7nc/foto4.jpg",texto:"Quiero ser tu refugio, ser el lugar donde nadie te juzga y donde siempre hay una luz encendida esperándote con los brazos abiertos por que no te prometo algo perfecto pero si algo real con todo el amor del mundo."},
+ {titulo:"Lo que viene",foto:"https://i.ibb.co/TxHCxP8b/foto7.jpg",texto:"Vienen días más tranquilos, más libres, más nuestros. No sé cuándo exactamente, pero sé que llegarán. Y yo estaré ahí siempre a tu lado mi vida."},
+ {titulo:"Una carta para tu corazón",foto:"https://i.ibb.co/FbG7X9rs/foto8.jpg",texto:"Si algún día dudas de ti, vuelve a leer esto: eres increible, eres maravillosa, eres suficiente y no estás sola. Tu historia aún tiene páginas hermosas por escribir y quiero ser parte de ellas cada dia de mi vida."},
+ {titulo:"Casi Navidad",foto:"https://i.ibb.co/C5Q2cDwj/foto9.jpg",texto:"Ya falta poquito. Aunque no estemos juntos, mi corazón tendrá puesta tu silla en la mesa. Esta Navidad también es tuya y mía y daria lo que fuera por que estuvieras aqui conmigo. Te extraño mucho y Te amo mi vida."},
+ {titulo:"Víspera de Nochebuena",foto:"https://i.ibb.co/1fcmWgC9/foto10.jpg",texto:"Mañana el mundo celebra, y yo agradezco que existas. Pide un deseo esta noche; yo ya pedí el mío: seguir a tu lado mi princesa hermosa."},
+ {titulo:"Feliz Navidad, mi amor",foto:"https://i.ibb.co/v6sK7YKC/foto11.jpg",texto:"Llegaste al final del camino, y también al principio de todo lo que vendrá. Gracias por ser mi mejor regalo y espero con ansias seguir siempre a tu lado por toda una vida entera. Te amo hoy, te amare mañana y te amare por el resto de mi vida.\n\nFeliz Navidad Mi Amor. ♥"}
+];
+
+const $=s=>document.querySelector(s);
+const KEY="adviento_abiertos_"+ANIO;
+let abiertos=[];
+try{abiertos=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){abiertos=[]}
+const guardar=()=>{try{localStorage.setItem(KEY,JSON.stringify(abiertos))}catch(e){}};
+
+function diaActual(){
+  if(MODO_PRUEBA) return 24;
+  const n=new Date();
+  const ini=new Date(ANIO,11,1), fin=new Date(ANIO,11,25);
+  if(n<ini) return 0;
+  if(n>=fin) return 24;
+  return n.getDate();
+}
+
+$("#aceptar").onclick=()=>{
+  const p=$("#portada");p.classList.add("salir");
+  setTimeout(()=>{p.classList.remove("on","salir");$("#tablero").classList.add("on");window.scrollTo(0,0)},750);
+  setTimeout(()=>{const h=$("#nodo"+(MODO_PRUEBA?1:Math.max(1,diaActual())));if(h)h.scrollIntoView({block:"center",behavior:"smooth"})},950);
+};
+
+const escH=t=>String(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function construirMapa(){
+  const hoy=diaActual();
+  const SP=[[1,2],[1,2],[1,3],[1,2],[1,2],[1,3],[1,2],[1,2],[1,2],[2,2],[1,3],[1,2]]; 
+  $("#mapa").innerHTML=DIARIO_NAVIDAD.slice(0,24).map((d,i)=>{
+    const n=i+1,[c,r]=SP[i%SP.length],f=(d.foto||"").trim(),ico=ICONOS[i]||"✨";
+    const ic=`<div class="ic">${ico}</div>`; 
+    return `<button id="nodo${n}" class="dia k${i%5}${n>hoy?" bloq":""}${abiertos.includes(n)?" abierto":""}${n===hoy&&!MODO_PRUEBA?" hoy":""}" style="grid-column:span ${c};grid-row:span ${r}" aria-label="Día ${n}">
+      <span class="num">${String(n).padStart(2,"0")}</span><span class="tx">${escH(d.titulo)}</span>${ic}</button>`;
+  }).join("");
+  document.querySelectorAll(".dia").forEach(b=>b.onclick=()=>abrir(+b.id.slice(4)));
+}
+
+let tt;
+function aviso(html){const t=$("#toast");t.innerHTML=html;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2800)}
+
+function abrir(n){
+  if(n>diaActual()){aviso(`🔒 Todavía no ✨<br>Esta sorpresa se abre el ${n} de diciembre`);return}
+  const d=DIARIO_NAVIDAD[n-1]||{};
+  const esc=t=>String(t||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  $("#carta").innerHTML=`<div class="dia">DÍA ${String(n).padStart(2,"0")} · DICIEMBRE</div><h3>${esc(d.titulo)}</h3>
+   ${(typeof d.foto==="string"&&d.foto.trim())?`<div class="polaroid ${n%2?"":"par"}"><div class="marco"><img src="${esc(d.foto.trim())}" alt="Nosotros" referrerpolicy="no-referrer"
+     onload="this.classList.add('ok')" onerror="this.closest('.polaroid').classList.add('fallo')"></div><div class="pie">${esc(d.pie)}</div></div>`:""}
+   <div class="texto">${esc(d.texto)}</div><div class="firma">${FIRMA}</div>
+   <button class="btn cerrar" id="cerrar">Cerrar</button>`;
+  $("#modal").classList.add("on");$("#modal").scrollTop=0;document.body.style.overflow="hidden";
+  $("#cerrar").onclick=cerrar;
+  if(!abiertos.includes(n)){abiertos.push(n);guardar();$("#nodo"+n).classList.add("abierto")}
+}
+function cerrar(){$("#modal").classList.remove("on");document.body.style.overflow=""}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")cerrar()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")cerrar()});
+construirMapa();
+
+(()=>{const c=$("#nieve"),x=c.getContext("2d");let w,h,f=[];
+ const rs=()=>{w=c.width=innerWidth;h=c.height=innerHeight};rs();addEventListener("resize",rs);
+ for(let i=0;i<70;i++)f.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2.6+.8,v:Math.random()*.6+.25,o:Math.random()*.5+.35,a:Math.random()*6});
+ (function a(){x.clearRect(0,0,w,h);for(const p of f){p.y+=p.v;p.a+=.01;p.x+=Math.sin(p.a)*.4;
+  if(p.y>h){p.y=-5;p.x=Math.random()*w}x.beginPath();x.arc(p.x,p.y,p.r,0,6.3);x.fillStyle=`rgba(255,255,255,${p.o})`;x.fill()}
+  requestAnimationFrame(a)})();
+})();
+</script>
+</body>
+</html>
